@@ -195,10 +195,10 @@ final public class OrcStruct implements Writable {
             ArrayList<String> fieldNames = info.getAllStructFieldNames();
             ArrayList<TypeInfo> fieldTypes = info.getAllStructFieldTypeInfos();
 
-            LOG.info(fieldNames);
-            LOG.info(fieldTypes);
+            LOG.info("fieldTypes：" + fieldTypes + "；fieldNames：" + fieldNames);
             fields = new ArrayList<StructField>(fieldNames.size());
-            for(int i=0; i < fieldNames.size(); ++i) {
+            for(int i=0; i < fieldTypes.size(); ++i) {
+                LOG.info("idx:" + i + " fieldName:" + fieldNames.get(i) + " fieldType:" + fieldTypes.get(i));
                 fields.add(new Field(fieldNames.get(i),
                         createObjectInspector(fieldTypes.get(i)), i));
             }
