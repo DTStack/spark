@@ -21,7 +21,7 @@ import java.io.IOException
 import java.lang.reflect.Method
 import java.security.PrivilegedExceptionAction
 import java.text.DateFormat
-import java.util._
+import java.util.{Arrays, Comparator, Date, Locale, TimeZone}
 
 import scala.collection.JavaConverters._
 import scala.util.control.NonFatal
