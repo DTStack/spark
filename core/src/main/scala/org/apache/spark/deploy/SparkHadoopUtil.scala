@@ -21,11 +21,10 @@ import java.io.IOException
 import java.lang.reflect.Method
 import java.security.PrivilegedExceptionAction
 import java.text.DateFormat
-import java.util.{Arrays, Comparator, Date, Locale}
+import java.util.{Arrays, Comparator, Date, Locale, TimeZone}
 
 import scala.collection.JavaConverters._
 import scala.util.control.NonFatal
-
 import com.google.common.primitives.Longs
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.{FileStatus, FileSystem, Path, PathFilter}
@@ -34,7 +33,6 @@ import org.apache.hadoop.mapred.JobConf
 import org.apache.hadoop.security.{Credentials, UserGroupInformation}
 import org.apache.hadoop.security.token.{Token, TokenIdentifier}
 import org.apache.hadoop.security.token.delegation.AbstractDelegationTokenIdentifier
-
 import org.apache.spark.{SparkConf, SparkException}
 import org.apache.spark.annotation.DeveloperApi
 import org.apache.spark.internal.Logging
@@ -376,6 +374,10 @@ class SparkHadoopUtil extends Logging {
         logDebug("Failed to decode $token: $e", e)
     }
     buffer.toString
+  }
+
+  def getTimeZone: TimeZone = {
+    TimeZone.getTimeZone(sparkConf.get("spark.history.timeZone", "GMT"))
   }
 }
 
