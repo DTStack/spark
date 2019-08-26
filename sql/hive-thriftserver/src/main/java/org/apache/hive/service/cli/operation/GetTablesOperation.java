@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.hadoop.hive.conf.HiveConf;
+import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
 import org.apache.hadoop.hive.metastore.IMetaStoreClient;
 import org.apache.hadoop.hive.metastore.api.Table;
 import org.apache.hadoop.hive.ql.security.authorization.plugin.HiveOperationType;
@@ -79,6 +80,10 @@ public class GetTablesOperation extends MetadataOperation {
     setState(OperationState.RUNNING);
     try {
       IMetaStoreClient metastoreClient = getParentSession().getMetaStoreClient();
+      if (!((HiveMetaStoreClient)metastoreClient).isMetaStoreLocal()) {
+        metastoreClient = HiveMetaStoreClient.newSynchronizedClient(metastoreClient);
+      }
+
       String schemaPattern = convertSchemaPattern(schemaName);
       List<String> matchingDbs = metastoreClient.getDatabases(schemaPattern);
       if(isAuthV2Enabled()){

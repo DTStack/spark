@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
+import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
 import org.apache.hadoop.hive.metastore.IMetaStoreClient;
 import org.apache.hadoop.hive.metastore.api.Table;
 import org.apache.hadoop.hive.ql.security.authorization.plugin.HiveOperationType;
@@ -126,6 +127,10 @@ public class GetColumnsOperation extends MetadataOperation {
     setState(OperationState.RUNNING);
     try {
       IMetaStoreClient metastoreClient = getParentSession().getMetaStoreClient();
+      if (!((HiveMetaStoreClient)metastoreClient).isMetaStoreLocal()) {
+        metastoreClient = HiveMetaStoreClient.newSynchronizedClient(metastoreClient);
+      }
+
       String schemaPattern = convertSchemaPattern(schemaName);
       String tablePattern = convertIdentifierPattern(tableName, true);
 

@@ -18,6 +18,7 @@
 
 package org.apache.hive.service.cli.operation;
 
+import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
 import org.apache.hadoop.hive.metastore.IMetaStoreClient;
 import org.apache.hadoop.hive.ql.security.authorization.plugin.HiveOperationType;
 import org.apache.hive.service.cli.FetchOrientation;
@@ -60,6 +61,10 @@ public class GetSchemasOperation extends MetadataOperation {
     }
     try {
       IMetaStoreClient metastoreClient = getParentSession().getMetaStoreClient();
+      if (!((HiveMetaStoreClient)metastoreClient).isMetaStoreLocal()) {
+        metastoreClient = HiveMetaStoreClient.newSynchronizedClient(metastoreClient);
+      }
+
       String schemaPattern = convertSchemaPattern(schemaName);
       for (String dbName : metastoreClient.getDatabases(schemaPattern)) {
         rowSet.addRow(new Object[] {dbName, DEFAULT_HIVE_CATALOG});

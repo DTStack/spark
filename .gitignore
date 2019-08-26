@@ -73,7 +73,7 @@ work/
 
 # For Hive
 TempStatsStore/
-metastore/
+#metastore/
 metastore_db/
 sql/hive-thriftserver/test_warehouses
 warehouse/
