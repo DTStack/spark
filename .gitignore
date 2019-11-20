@@ -87,3 +87,4 @@ spark-warehouse/
 *.Rproj.*
 
 .Rproj.user
+/selfudf/

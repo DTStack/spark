@@ -101,6 +101,11 @@
       <groupId>net.sf.jpam</groupId>
       <artifactId>jpam</artifactId>
     </dependency>
+      <dependency>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>jetty-runner</artifactId>
+          <version>9.3.27.v20190418</version>
+      </dependency>
   </dependencies>
   <build>
     <outputDirectory>target/scala-${scala.binary.version}/classes</outputDirectory>
