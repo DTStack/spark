@@ -199,7 +199,15 @@ private[sql] class HiveSessionCatalog(
           // Hive is case insensitive.
           val functionName = funcName.unquotedString.toLowerCase
           if (!hiveFunctions.contains(functionName)) {
-            failFunctionLookup(funcName.unquotedString)
+//            failFunctionLookup(funcName.unquotedString)
+
+            try{
+              failFunctionLookup(funcName.unquotedString)
+            } catch{
+              case ex: Exception => {
+                throw error
+              }
+            }
           }
 
           // TODO: Remove this fallback path once we implement the list of fallback functions

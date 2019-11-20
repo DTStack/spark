@@ -28,6 +28,7 @@ import javax.ws.rs.ext.{MessageBodyWriter, Provider}
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.{ObjectMapper, SerializationFeature}
+import org.apache.spark.deploy.SparkHadoopUtil
 
 /**
  * This class converts the POJO metric responses into json, using jackson.
@@ -86,8 +87,9 @@ private[v1] class JacksonMessageWriter extends MessageBodyWriter[Object]{
 
 private[spark] object JacksonMessageWriter {
   def makeISODateFormat: SimpleDateFormat = {
-    val iso8601 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'GMT'", Locale.US)
-    val cal = Calendar.getInstance(new SimpleTimeZone(0, "GMT"))
+    val timeZone = SparkHadoopUtil.get.getTimeZone
+    val iso8601 = new SimpleDateFormat(s"yyyy-MM-dd'T'HH:mm:ss.SSS'${timeZone.getID}'", Locale.US)
+    val cal = Calendar.getInstance(timeZone)
     iso8601.setCalendar(cal)
     iso8601
   }
